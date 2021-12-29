@@ -11,15 +11,6 @@ import pprint
 
 # on initialise url à l'adresse url de la page qu'on veut extraire: une categorie
 url = 'https://books.toscrape.com/catalogue/category/books/travel_2/index.html'
-url = 'https://books.toscrape.com/catalogue/category/books/mystery_3/index.html'
-url = 'https://books.toscrape.com/catalogue/category/books/historical-fiction_4/index.html'
-url = 'https://books.toscrape.com/catalogue/category/books/sequential-art_5/index.html'
-url = 'https://books.toscrape.com/catalogue/category/books/classics_6/index.html'
-url = 'https://books.toscrape.com/catalogue/category/books/philosophy_7/index.html'
-url = 'https://books.toscrape.com/catalogue/category/books/romance_8/index.html'
-url = 'https://books.toscrape.com/catalogue/category/books/womens-fiction_9/index.html'
-url = 'https://books.toscrape.com/catalogue/category/books/fiction_10/index.html'
-
 
 # méthode .get()pour récupérer les données HTML dans la variable reponse
 reponse = requests.get(url)

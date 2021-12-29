@@ -12,7 +12,6 @@ from pprint import pprint
 
 
 # on initialise url à l'adresse url de la page qu'on veut extraire
-# cat Travel
 # urlbook = 'https://books.toscrape.com/catalogue/the-bridge-to-consciousness-im-writing-the-bridge-between-science-and-our-old-and-new-beliefs_840/index.html'
 
 # urlbook = 'https://books.toscrape.com/catalogue/a-murder-in-time_877/index.html'
