@@ -6,11 +6,20 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 from math import *
-from unecategorieunlivre import extract_book
+from unecategorieunlivre_beta import extract_book
 import pprint
 
 # on initialise url à l'adresse url de la page qu'on veut extraire: une categorie
-url = 'https://books.toscrape.com/catalogue/category/books/mystery_3/index.html' #OK
+url = 'https://books.toscrape.com/catalogue/category/books/travel_2/index.html'
+url = 'https://books.toscrape.com/catalogue/category/books/mystery_3/index.html'
+url = 'https://books.toscrape.com/catalogue/category/books/historical-fiction_4/index.html'
+url = 'https://books.toscrape.com/catalogue/category/books/sequential-art_5/index.html'
+url = 'https://books.toscrape.com/catalogue/category/books/classics_6/index.html'
+url = 'https://books.toscrape.com/catalogue/category/books/philosophy_7/index.html'
+url = 'https://books.toscrape.com/catalogue/category/books/romance_8/index.html'
+url = 'https://books.toscrape.com/catalogue/category/books/womens-fiction_9/index.html'
+url = 'https://books.toscrape.com/catalogue/category/books/fiction_10/index.html'
+
 
 # méthode .get()pour récupérer les données HTML dans la variable reponse
 reponse = requests.get(url)
@@ -41,34 +50,34 @@ print("nombre total de livres", nombrelivres)
 
 # 2) definir une liste de tous les liens des livres de cette categorie
 baliseh3 = soup.findAll('h3')
-print("balise h3 : ", baliseh3)
-print("nombre de livres dans la page", len(baliseh3))
+# print("balise h3 : ", baliseh3)
+# print("nombre de livres dans la page", len(baliseh3))
 
 nbpage = ceil(nombrelivres/20)
 print("nombre de pages de la categorie:", nbpage)
 
 
-# category : on reupere le nom de la catégorie au niveau du lien de navigation pour les pages suplementaires
+# category : on recupere le nom de la catégorie au niveau du lien de navigation pour les pages suplementaires
 links = []
 for link in soup.find_all('a'):
     links.append(link.get('href'))
     #print('linsks :',  links)
 
 #print('len links :', len(links))
-print('links :', links)
+# print('links :', links)
 
 # on enleve les 3 premiers elements
-print('links[3:]', links[3:])
+# print('links[3:]', links[3:])
 
 liens_categories = links[3:]
 # on laisse uniquement les 51 premiers elements de la liste
 liens_categories = liens_categories[:51]
-print('liens_categories :', liens_categories)
+# print('liens_categories :', liens_categories)
 
 
 # on recupere le nom de la categorie dans l'url reçue
 nom_categorie = url[52:]
-print('nom_categorie -52:', nom_categorie)
+# print('nom_categorie -52:', nom_categorie)
 
 # on supprime les derniers caracteres
 nom_categorie = nom_categorie[:-11]
@@ -85,7 +94,7 @@ for x in range(nbpage):
             a = h3.find('a')
             # on recherche l'attribut href contenant le lien url
             lien = a['href']
-            print('lien [9]', lien[9:])
+            # print('lien [9]', lien[9:])
 
             # on rajoute ce lien generique au lien du livre auquel on a enlevé les 9 premiers caractères
             lienslivres.append('https://books.toscrape.com/catalogue/' + lien[9:])
@@ -119,4 +128,5 @@ print("len(lienslivres)", len(lienslivres))
 url = lienslivres[0]
 for url in range(len(lienslivres)):
     url_livre = lienslivres[url]
+    print('url_livre : ', url_livre)
     extract_book(url_livre)
