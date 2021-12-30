@@ -8,12 +8,8 @@ import urllib.request
 import os
 import shutil
 
-from pprint import pprint
-
-
 # on initialise url à l'adresse url de la page qu'on veut extraire
 # urlbook = 'https://books.toscrape.com/catalogue/the-bridge-to-consciousness-im-writing-the-bridge-between-science-and-our-old-and-new-beliefs_840/index.html'
-
 # urlbook = 'https://books.toscrape.com/catalogue/a-murder-in-time_877/index.html'
 
 # ----------------------------------------------------
@@ -65,14 +61,7 @@ def extract_book(urlbook: str):
     number_available = number_available.split("(")[1].split()[0]
     # print('number_available', number_available)
 
-    # product_description à revoir
-    # prod = 0
-    # for prod in soup.find_all("p")[prod]:
-    #   if 'product_description' not in soup.find_all('p')[prod]:
-    #       product_description = 'no product_description for this book'
-    #    else:
-    #        product_description = soup.findAll("p")[3].text
-
+    # product_description
     product_description = soup.findAll("p")[3].text  # original
     if product_description == '\n\n\n\n\n\n':
         product_description = 'ABSENCE DE DESCRIPTION POUR CE LIVRE !'
@@ -86,7 +75,6 @@ def extract_book(urlbook: str):
     # print('category :', category)
 
     # review_rating
-    # review_rating = soup.select("p.star-rating")[0].get("class")[-1]
     review_rating = soup.select("p.star-rating")[0].get("class")[1]
     # print('review_rating', review_rating)
 
@@ -100,10 +88,8 @@ def extract_book(urlbook: str):
             review_rating = i + 1
 
     # print('review_rating converti', review_rating)
-    #  print('review rating: ', review_rating)
-
+    # print('review rating: ', review_rating)
     # image_url : url de l'image du livre
-
     # image_livre = soup.ima['src']
     # image_livre = soup.findAll("img.src")
     # print("image_livre", image_livre)
@@ -152,15 +138,10 @@ def extract_book(urlbook: str):
     # création d'un dossier qui aura le nom de la categorie
     nom_dossier = infos_livre["category"] + "_images"
 
+    # si le dossier n'existe pa, on le crée
     if not os.path.exists(nom_dossier):
         os.mkdir(nom_dossier)
 
-        """
-        path = os.path.abspath(nom_dossier)
-        filedest = os.path.join(path, titre_image)
-        # Déplacer un fichier du répertoire rep1 vers rep2
-        shutil.move(titre_image, filedest)
-        """
     if os.path.exists(nom_dossier):
         path = os.path.abspath(nom_dossier)
         filedest = os.path.join(path, titre_image)
@@ -180,4 +161,4 @@ def extract_book(urlbook: str):
         writer.writerow(infos_livre)
 
 
-# extract_book(urlbook)
+#extract_book(urlbook)
