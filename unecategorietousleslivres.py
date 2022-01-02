@@ -2,13 +2,18 @@
 # ----------------------------------------------------
 #    importation des packages necessaires au projet
 # ----------------------------------------------------
+import csv
 import requests
 from bs4 import BeautifulSoup
 from math import *
-from unecategorieunlivre import extract_book
+from unecategorieunlivre_beta import extract_book
 
 # on initialise url à l'adresse url de la page qu'on veut extraire: une categorie
 # url = 'https://books.toscrape.com/catalogue/category/books/travel_2/index.html'
+# url = 'https://books.toscrape.com/catalogue/category/books/mystery_3/index.html'
+# url = 'https://books.toscrape.com/catalogue/category/books/historical-fiction_4/index.html'
+# url = 'https://books.toscrape.com/catalogue/category/books/sequential-art_5/index.html'
+# url ='https://books.toscrape.com/catalogue/category/books/default_15/index.html'
 
 def extract_all_books_one_cat(url: str) :
     # méthode .get()pour récupérer les données HTML dans la variable reponse
@@ -46,7 +51,6 @@ def extract_all_books_one_cat(url: str) :
     nbpage = ceil(nombrelivres/20)
     print("nombre de pages de la categorie:", nbpage)
 
-
     # category : on recupere le nom de la catégorie au niveau du lien de navigation pour les pages suplementaires
     links = []
     for link in soup.find_all('a'):
@@ -63,7 +67,6 @@ def extract_all_books_one_cat(url: str) :
     # on laisse uniquement les 51 premiers elements de la liste
     liens_categories = liens_categories[:51]
     # print('liens_categories :', liens_categories)
-
 
     # on recupere le nom de la categorie dans l'url reçue
     nom_categorie = url[52:]
@@ -121,5 +124,4 @@ def extract_all_books_one_cat(url: str) :
         print('url_livre : ', url_livre)
         extract_book(url_livre)
 
-
-# extract_all_books_one_cat(url)
+#extract_all_books_one_cat(url)
