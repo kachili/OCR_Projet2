@@ -9,13 +9,7 @@ import os
 import shutil
 
 # on initialise url à l'adresse url de la page qu'on veut extraire
-
-# cas où larubrqiue Description n'existe pas dans la page web (categorie :Default / livre : the-bridge-to-consciousness)# urlbook = 'https://books.toscrape.com/catalogue/the-bridge-to-consciousness-im-writing-the-bridge-between-science-and-our-old-and-new-beliefs_840/index.html'
-# urlbook = 'https://books.toscrape.com/catalogue/a-murder-in-time_877/index.html'
-# urlbook = 'https://books.toscrape.com/catalogue/logan-kade-fallen-crest-high-55_384/index.html'
-# urlbook = 'https://books.toscrape.com/catalogue/robin-war_730/index.html' # pb avec encodage ANSI
-
-
+# urlbook = 'https://books.toscrape.com/catalogue/its-only-the-himalayas_981/index.html'
 
 # ----------------------------------------------------
 # fonction d'extraction d'informations pour un livre
@@ -66,20 +60,12 @@ def extract_book(urlbook: str):
     number_available = number_available.split("(")[1].split()[0]
     # print('number_available', number_available)
 
-    # ------------------------------------------------------------------------------
-    # ammelioration de product_description
-    product_description = soup.findAll("p")[3].text  # original
-    # print('product_description:', product_description)
+    # Recherche de toutes les balises 'p' pour extraire product_description
+    # On garde le format text en remplaçant les ';' par ',' et les '\n' par '-' dans le cas où ce champs n'existe pas.
+    # dans ce dernier cas, on laisse quand meme ce champs à '---' pourqu'il apparaisse dans le fichier csv
 
-    product_description = product_description.replace(';', ',')
+    product_description = soup.findAll("p")[3].text.replace(';', ',').replace('\n', '-')
     # print('product_description:', product_description)
-
-    # string.replace(oldStr, newStr, count) -on remplace les \n par 'X' dans le cas où la rubrique
-    # product_description n'existe pas.
-    new_product_description = product_description.replace('\n', '==')
-    product_description = new_product_description
-    # print('new_product_description:', product_description)
-    # ------------------------------------------------------------------------------
 
     # category : nom de la catégorie au niveau du lien de navigation
     category = soup.select("ul.breadcrumb>li>a")[2].text
@@ -105,10 +91,9 @@ def extract_book(urlbook: str):
     # image_livre = soup.findAll("img.src")
     # print("image_livre", image_livre)
 
+    # on reconstitue l'url de l'image
     image_url = "http://books.toscrape.com" + soup.img['src'][5:]
     # print("image_url :", image_url)
-    # init de info_livress
-    infos_livre = {}
 
     # création du fichier data.csv pour enregistrer toutes les données extraites d'un livre
 
@@ -117,11 +102,11 @@ def extract_book(urlbook: str):
                 "product_description": product_description, "category": category, "review_rating": review_rating,
                 "image_url": image_url}
 
-    # print(infos_livre)
+    print('Infos livre: ', infos_livre)
 
     # appel de la fonction
     # listecolones = extract_book(urlbook)
-    print("Dictionnaire:", infos_livre)
+    # print("Dictionnaire:", infos_livre)
 
     # sauvegarde de l'image à partir du site
     # on recupere le nom de l'image (qui prend le nom du livre)
@@ -143,7 +128,7 @@ def extract_book(urlbook: str):
     titre_image = nom_livre + '_' + urlimage.split("/")[-1]
     # print("titre de l'image split:", titre_image)
 
-    fichier_image_recupere = urllib.request.urlretrieve(urlimage, titre_image)
+    urllib.request.urlretrieve(urlimage, titre_image)
     # print("print IMAGE: ", IMAGE)
 
     # création d'un dossier qui aura le nom de la categorie
@@ -162,9 +147,7 @@ def extract_book(urlbook: str):
     nom_fichier = category + ".csv"
     # print('nom_fichier ecriture: ', nom_fichier)
 
-    # with open(nom_fichier, 'a', newline='', encoding='UTF8') as csvfile:
-    # with open(nom_fichier, 'a', newline='', encoding='ANSI') as csvfile:
-    # with open(nom_fichier, 'a', newline='', encoding='UTF-16LE') as csvfile:
+    # On utilise l'encodage 16 bits pour éliminer les caractères spéciaux lors lors de l'ecriture dans csvfile
     with open(nom_fichier, 'a', newline='', encoding='UTF-16') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=infos_livre)
 
@@ -173,4 +156,5 @@ def extract_book(urlbook: str):
             writer.writeheader()
         # La méthode writerow() est utilisée pour écrire des lignes de données dans le fichier spécifié.
         writer.writerow(infos_livre)
+
 # extract_book(urlbook)

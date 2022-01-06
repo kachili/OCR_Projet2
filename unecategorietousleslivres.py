@@ -6,16 +6,12 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 from math import *
-from unecategorieunlivre_beta import extract_book
+from unecategorieunlivre import extract_book
 
 # on initialise url à l'adresse url de la page qu'on veut extraire: une categorie
 # url = 'https://books.toscrape.com/catalogue/category/books/travel_2/index.html'
-# url = 'https://books.toscrape.com/catalogue/category/books/mystery_3/index.html'
-# url = 'https://books.toscrape.com/catalogue/category/books/historical-fiction_4/index.html'
-# url = 'https://books.toscrape.com/catalogue/category/books/sequential-art_5/index.html'
-# url ='https://books.toscrape.com/catalogue/category/books/default_15/index.html'
 
-def extract_all_books_one_cat(url: str) :
+def extract_all_books_one_cat(url: str):
     # méthode .get()pour récupérer les données HTML dans la variable reponse
     reponse = requests.get(url)
     #print(reponse)
@@ -51,30 +47,10 @@ def extract_all_books_one_cat(url: str) :
     nbpage = ceil(nombrelivres/20)
     print("nombre de pages de la categorie:", nbpage)
 
-    # category : on recupere le nom de la catégorie au niveau du lien de navigation pour les pages suplementaires
-    links = []
-    for link in soup.find_all('a'):
-        links.append(link.get('href'))
-        #print('linsks :',  links)
-
-    #print('len links :', len(links))
-    # print('links :', links)
-
-    # on enleve les 3 premiers elements
-    # print('links[3:]', links[3:])
-
-    liens_categories = links[3:]
-    # on laisse uniquement les 51 premiers elements de la liste
-    liens_categories = liens_categories[:51]
-    # print('liens_categories :', liens_categories)
-
-    # on recupere le nom de la categorie dans l'url reçue
-    nom_categorie = url[52:]
-    # print('nom_categorie -52:', nom_categorie)
-
-    # on supprime les derniers caracteres
-    nom_categorie = nom_categorie[:-11]
-    print('nom_categorie -4:', nom_categorie)
+    # nom_categorie est une sous-chaine de la chaine contenant l'url
+    # en enlenvant les 52 premiers et les 11 derniers caractères
+    nom_categorie = url[52:-11]
+    print('Nom categorie :', nom_categorie)
 
     # on definit une liste vide des liens de tous les livres de la categorie
     lienslivres = []
@@ -97,7 +73,7 @@ def extract_all_books_one_cat(url: str) :
         else:
             # on recupere les liens des pages suivantes
             urlpsuiv = "https://books.toscrape.com/catalogue/category/books/" + nom_categorie + "/" + "page-" + str(x+1) + ".html"
-            print('url page suivante', urlpsuiv)
+            # print('url page suivante', urlpsuiv)
 
             reponsesuiv = requests.get(urlpsuiv)
             # print(reponse)
@@ -115,13 +91,12 @@ def extract_all_books_one_cat(url: str) :
                 lienslivres.append('https://books.toscrape.com/catalogue/' + liensuiv[9:])
                 #print('url page suivante', urlpsuiv)
 
-    print("liste des liens des livres", lienslivres)
-    print("len(lienslivres)", len(lienslivres))
+    # print("liste des liens des livres", lienslivres)
+    # print("len(lienslivres)", len(lienslivres))
 
-    url = lienslivres[0]
     for url in range(len(lienslivres)):
         url_livre = lienslivres[url]
-        print('url_livre : ', url_livre)
+        # print('url_livre : ', url_livre)
         extract_book(url_livre)
 
-#extract_all_books_one_cat(url)
+# extract_all_books_one_cat(url)

@@ -5,9 +5,8 @@
 import requests
 from bs4 import BeautifulSoup
 from unecategorietousleslivres import extract_all_books_one_cat
-# import pprint
 
-# on initialise url à l'adresse du site : https://books.toscrape.com/index.html
+# on initialise url à l'adresse du site :
 url = 'https://books.toscrape.com/index.html'
 
 # méthode .get()pour récupérer les données HTML dans la variable reponse
@@ -32,23 +31,25 @@ soup = BeautifulSoup(page, "html.parser")
 # 3) appeler le programme unecategorietousleslivres.py et extraire le contenu du site entier
 
 # 1) recuperer le Lien de chaque catégorie
+# on enleve les 2 premiers elements de la liste
 lien_categorie = soup.select("li>a")[2:]
 # print("lien_categorie : ", lien_categorie)
 
-# 2) stocker tous ces liens dans une liste
+# 2) stocker tous ces liens des categories dans une liste
 links = []
 for link in lien_categorie:
     links.append(link.get('href'))
    # print('links :',  links)
 
-links = links[:50]
-print('links_total :',  links)
+links = links[:-1]
+# print('len (links_total)', len(links))
+# print('links_total :',  links)
 
 # reconstitution de l'url complete de chaque categorie
 for k in range(len(links)):
         links[k] = 'https://books.toscrape.com/' + links[k]
-        print(links[k])
-print('links -fin :', links)
+        # print(links[k])
+print('Liste de liens des categories:', links)
 
 
 # 3) appeler le programme unecategorietousleslivres.py et extraire le contenu du site entier
