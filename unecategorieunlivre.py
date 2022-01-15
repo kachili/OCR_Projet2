@@ -7,9 +7,17 @@ from bs4 import BeautifulSoup
 import urllib.request
 import os
 import shutil
+import sys
+from pprint import pprint
 
-# on initialise url à l'adresse url de la page qu'on veut extraire
-# urlbook = 'https://books.toscrape.com/catalogue/its-only-the-himalayas_981/index.html'
+
+# Script unecategorieunlivre lancé avec la ligne de commande avec une url comme parametre
+if len(sys.argv) > 1 and sys.argv[0] == 'unecategorieunlivre.py':
+    urlbook = sys.argv[1]
+else: # Script unecategorieunlivre lancé avec Pycharm
+    if sys.argv[0][-27:] == 'unecategorieunlivre.py':
+        # print('sys.argv[0][-27:] : ', sys.argv[0][-27:])
+        urlbook = 'https://books.toscrape.com/catalogue/its-only-the-himalayas_981/index.html'
 
 # ----------------------------------------------------
 # fonction d'extraction d'informations pour un livre
@@ -28,12 +36,12 @@ def extract_book(urlbook: str):
     soup = BeautifulSoup(page, "html.parser")
     # print(soup)
 
-    # ----------------------------------------------------
-    #    RECHERCHE DES INFOS DEMANDEES
-    # ----------------------------------------------------
+    # ---------------------------------------------------------
+    #    RECHERCHE DES INFORMATIONS D'UN LIVRE D'UNE CATEGORIE
+    # ----------------------------------------------------------
 
     # product_page_url
-    product_page_url = urlbook
+    # product_page_url = urlbook
 
     # affiche dans une liste tous les elements délimités par la balise <td>: voir le contenu de soup
     description = soup.findAll('td')
@@ -86,11 +94,8 @@ def extract_book(urlbook: str):
 
     # print('review_rating converti', review_rating)
     # print('review rating: ', review_rating)
-    # image_url : url de l'image du livre
-    # image_livre = soup.ima['src']
-    # image_livre = soup.findAll("img.src")
-    # print("image_livre", image_livre)
 
+    # image_url : url de l'image du livre
     # on reconstitue l'url de l'image
     image_url = "http://books.toscrape.com" + soup.img['src'][5:]
     # print("image_url :", image_url)
@@ -102,7 +107,8 @@ def extract_book(urlbook: str):
                 "product_description": product_description, "category": category, "review_rating": review_rating,
                 "image_url": image_url}
 
-    print('Infos livre: ', infos_livre)
+    pprint(infos_livre)
+    # print('Infos livre: ', infos_livre)
 
     # appel de la fonction
     # listecolones = extract_book(urlbook)
@@ -157,4 +163,5 @@ def extract_book(urlbook: str):
         # La méthode writerow() est utilisée pour écrire des lignes de données dans le fichier spécifié.
         writer.writerow(infos_livre)
 
-# extract_book(urlbook)
+if sys.argv[0][-27:] == 'unecategorieunlivre.py':
+   extract_book(urlbook)

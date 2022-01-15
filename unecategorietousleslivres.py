@@ -2,22 +2,28 @@
 # ----------------------------------------------------
 #    importation des packages necessaires au projet
 # ----------------------------------------------------
-import csv
+import sys
 import requests
 from bs4 import BeautifulSoup
 from math import *
 from unecategorieunlivre import extract_book
 
-# on initialise url à l'adresse url de la page qu'on veut extraire: une categorie
-# url = 'https://books.toscrape.com/catalogue/category/books/travel_2/index.html'
 
-def extract_all_books_one_cat(url: str):
+# Script unecategorietousleslivres avec la ligne de commande avec une url comme parametre
+if len(sys.argv) > 1 and sys.argv[0] == 'unecategorietousleslivres.py':
+    url = sys.argv[1]
+else: # Script unecategorietousleslivres lancé avec Pycharm
+    if sys.argv[0][-33:] == 'unecategorietousleslivres.py':
+        # print('sys.argv[0][-33:] : ', sys.argv[0][-33:])
+        url = 'https://books.toscrape.com/catalogue/category/books/travel_2/index.html'
+
+def extract_all_books_one_cat(url: str) :
     # méthode .get()pour récupérer les données HTML dans la variable reponse
     reponse = requests.get(url)
     #print(reponse)
 
     page = reponse.content #text sous forme de texte
-    #print(page)
+    # print(page)
 
     # on parse le code html obtenu avec la package BeautifulSoup
     # A partir de l'objet soup, on obtient des éléments par leur balise, ID ou classe.
@@ -92,11 +98,12 @@ def extract_all_books_one_cat(url: str):
                 #print('url page suivante', urlpsuiv)
 
     # print("liste des liens des livres", lienslivres)
-    # print("len(lienslivres)", len(lienslivres))
+    print("taille liste de liens de livres : ", len(lienslivres))
 
     for url in range(len(lienslivres)):
         url_livre = lienslivres[url]
         # print('url_livre : ', url_livre)
         extract_book(url_livre)
 
-# extract_all_books_one_cat(url)
+if sys.argv[0][-33:] == 'unecategorietousleslivres.py':
+    extract_all_books_one_cat(url)
