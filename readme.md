@@ -4,14 +4,17 @@ ETAPES:
 Création du répertoire projet2 : mkdir projet2
 On se met au niveau du répertoire projet2 : cd projet2
 On crée un environnement virtuel pour ce projet : 
-On tape la commande : python -m venv venv
+On tape la commande : python -m venv env
 On vérifie que le répertoire env est bien crée : 
 On tape la commande dir 
-On obtient  ==> venv
+On obtient  ==> env
 
 On procède à l'activation de l'environnement virtuel env par la commande :
-On tape la commande : venv\Scripts\activate
+On tape la commande : env\Scripts\activate
 On obtient  ==> (env) C:\...\projet2
+
+Pour installer les packages spécifiques à ce projet, taper la commande suivante : 
+pip install -r requirements.txt
 
 EXECUTION DES SCRIPTS
 Remarque : 
@@ -48,3 +51,6 @@ Il extrait toutes les informations de tous les livres de toutes les catégories.
 Résultat :
 Un fichier «nomdelacategorie.csv » est créé avec les informations de tous les livres pour chaque categorie.
 Un répertoire «nomdelacategorie _images » est créé avec l’ensemble des images des livres pour chaque categorie.
+
+Lien Github pour les Scripts, le fichier readme.md et le fichier requirements.txt
+https://github.com/kachili/ocr_projet2

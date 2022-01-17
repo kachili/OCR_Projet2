@@ -8,13 +8,12 @@ from bs4 import BeautifulSoup
 from math import *
 from unecategorieunlivre import extract_book
 
-
 # Script unecategorietousleslivres avec la ligne de commande avec une url comme parametre
 if len(sys.argv) > 1 and sys.argv[0] == 'unecategorietousleslivres.py':
     url = sys.argv[1]
 else: # Script unecategorietousleslivres lancé avec Pycharm
-    if sys.argv[0][-33:] == 'unecategorietousleslivres.py':
-        # print('sys.argv[0][-33:] : ', sys.argv[0][-33:])
+    if sys.argv[0][-28:] == 'unecategorietousleslivres.py':
+        # print('sys.argv[0][-33:] : ', sys.argv[0][-28:])
         url = 'https://books.toscrape.com/catalogue/category/books/travel_2/index.html'
 
 def extract_all_books_one_cat(url: str) :
@@ -25,17 +24,16 @@ def extract_all_books_one_cat(url: str) :
     page = reponse.content #text sous forme de texte
     # print(page)
 
-    # on parse le code html obtenu avec la package BeautifulSoup
+    # on parse le code html obtenu avec le package BeautifulSoup
     # A partir de l'objet soup, on obtient des éléments par leur balise, ID ou classe.
     # on obtient une liste de tous les elements
 
     soup = BeautifulSoup(page, "html.parser")
     #print(soup)
 
-    # ----------------------------------------------------
-    #    RECHERCHE DES INFOS DEMANDEES
-    #    tous les livres d'une categorie
-    # ----------------------------------------------------
+    # ----------------------------------------------------------
+    #    RECHERCHE DES INFOS DE TOUS LES LIVRES D'UNE CATEGORIE
+    # -----------------------------------------------------------
 
     # 1) recuperer le nombre de livres dans la categorie
     # 2) definir une liste de tous les liens de livres de cette categorie
@@ -100,10 +98,11 @@ def extract_all_books_one_cat(url: str) :
     # print("liste des liens des livres", lienslivres)
     print("taille liste de liens de livres : ", len(lienslivres))
 
+    # 3) extraire toutes les infos de chaque livre
     for url in range(len(lienslivres)):
         url_livre = lienslivres[url]
         # print('url_livre : ', url_livre)
         extract_book(url_livre)
 
-if sys.argv[0][-33:] == 'unecategorietousleslivres.py':
+if sys.argv[0][-28:] == 'unecategorietousleslivres.py':
     extract_all_books_one_cat(url)

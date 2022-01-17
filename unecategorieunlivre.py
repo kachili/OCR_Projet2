@@ -10,13 +10,12 @@ import shutil
 import sys
 from pprint import pprint
 
-
 # Script unecategorieunlivre lancé avec la ligne de commande avec une url comme parametre
 if len(sys.argv) > 1 and sys.argv[0] == 'unecategorieunlivre.py':
     urlbook = sys.argv[1]
 else: # Script unecategorieunlivre lancé avec Pycharm
-    if sys.argv[0][-27:] == 'unecategorieunlivre.py':
-        # print('sys.argv[0][-27:] : ', sys.argv[0][-27:])
+    if sys.argv[0][-22:] == 'unecategorieunlivre.py':
+        print('sys.argv[0][-27:] : ', sys.argv[0][-22:])
         urlbook = 'https://books.toscrape.com/catalogue/its-only-the-himalayas_981/index.html'
 
 # ----------------------------------------------------
@@ -110,10 +109,6 @@ def extract_book(urlbook: str):
     pprint(infos_livre)
     # print('Infos livre: ', infos_livre)
 
-    # appel de la fonction
-    # listecolones = extract_book(urlbook)
-    # print("Dictionnaire:", infos_livre)
-
     # sauvegarde de l'image à partir du site
     # on recupere le nom de l'image (qui prend le nom du livre)
     # on recupre le nom de la categorie pour créer un dossier qui contiendra les images
@@ -135,7 +130,7 @@ def extract_book(urlbook: str):
     # print("titre de l'image split:", titre_image)
 
     urllib.request.urlretrieve(urlimage, titre_image)
-    # print("print IMAGE: ", IMAGE)
+    # print("Nom de l image: ", titre_image)
 
     # création d'un dossier qui aura le nom de la categorie
     nom_dossier = infos_livre["category"] + "_images"
@@ -163,5 +158,5 @@ def extract_book(urlbook: str):
         # La méthode writerow() est utilisée pour écrire des lignes de données dans le fichier spécifié.
         writer.writerow(infos_livre)
 
-if sys.argv[0][-27:] == 'unecategorieunlivre.py':
+if sys.argv[0][-22:] == 'unecategorieunlivre.py':
    extract_book(urlbook)

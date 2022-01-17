@@ -4,7 +4,7 @@
 # ----------------------------------------------------
 import requests
 from bs4 import BeautifulSoup
-from unecategorietousleslivres_beta import extract_all_books_one_cat
+from unecategorietousleslivres import extract_all_books_one_cat
 from pprint import pprint
 
 # on initialise url à l'adresse du site :
@@ -17,7 +17,7 @@ reponse = requests.get(url)
 page = reponse.content #text sous forme de texte
 #print(page)
 
-# on parse le code html obtenu avec la package BeautifulSoup
+# on parse le code html obtenu avec le package BeautifulSoup
 # A partir de l'objet soup, on obtient des éléments par leur balise, ID ou classe.
 # on obtient une liste de tous les elements
 
@@ -51,7 +51,7 @@ links = links[:-1]
 for k in range(len(links)):
     links[k] = 'https://books.toscrape.com/' + links[k]
     # print(links[k])
-
+print('**** liste des liens url de chaque catégorie ***')
 pprint(links)
 # print('Liste de liens des categories:', links)
 
