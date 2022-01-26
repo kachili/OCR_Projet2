@@ -6,16 +6,16 @@ import requests
 from bs4 import BeautifulSoup
 import urllib.request
 import os
-import shutil
 import sys
 from pprint import pprint
 
 # Script unecategorieunlivre lancé avec la ligne de commande avec une url comme parametre
 if len(sys.argv) > 1 and sys.argv[0] == 'unecategorieunlivre.py':
     urlbook = sys.argv[1]
+
 else: # Script unecategorieunlivre lancé avec Pycharm
-    if sys.argv[0][-22:] == 'unecategorieunlivre.py':
-        print('sys.argv[0][-27:] : ', sys.argv[0][-22:])
+    # print('syargvsplit :', sys.argv[0].split("/")[-1])
+    if sys.argv[0].split("/")[-1] == 'unecategorieunlivre.py':
         urlbook = 'https://books.toscrape.com/catalogue/its-only-the-himalayas_981/index.html'
 
 # ----------------------------------------------------
@@ -36,7 +36,7 @@ def extract_book(urlbook: str):
     # print(soup)
 
     # ---------------------------------------------------------
-    #    RECHERCHE DES INFORMATIONS D'UN LIVRE D'UNE CATEGORIE
+    #    EXTRACTION DES INFORMATIONS D'UN LIVRE D'UNE CATEGORIE
     # ----------------------------------------------------------
 
     # product_page_url
@@ -64,6 +64,7 @@ def extract_book(urlbook: str):
 
     # number_available
     number_available = description[5].text
+    # print('number_available : ', number_available)
     number_available = number_available.split("(")[1].split()[0]
     # print('number_available', number_available)
 
@@ -99,20 +100,16 @@ def extract_book(urlbook: str):
     image_url = "http://books.toscrape.com" + soup.img['src'][5:]
     # print("image_url :", image_url)
 
-    # création du fichier data.csv pour enregistrer toutes les données extraites d'un livre
-
+    # dictionnaire contenant les infos demandées
     infos_livre = {"Code": universal_product_code, "Title": title, "url": urlbook, "price_including_tax":
                 price_including_tax, "price_excluding_tax": price_excluding_tax, "number_available": number_available,
                 "product_description": product_description, "category": category, "review_rating": review_rating,
                 "image_url": image_url}
 
-    pprint(infos_livre)
+    # pprint(infos_livre)
     # print('Infos livre: ', infos_livre)
 
     # sauvegarde de l'image à partir du site
-    # on recupere le nom de l'image (qui prend le nom du livre)
-    # on recupre le nom de la categorie pour créer un dossier qui contiendra les images
-
     # on recupere l'url de l'image
     urlimage = infos_livre["image_url"]
     # print("url de l'image: ", urlimage)
@@ -126,37 +123,59 @@ def extract_book(urlbook: str):
     # print('titre du livre sans les carac speciaux: ', new_string)
     nom_livre = new_string
 
-    titre_image = nom_livre + '_' + urlimage.split("/")[-1]
-    # print("titre de l'image split:", titre_image)
+    # -----------------------------------------------------------------------
+    # création de deux dossiers Dossier_image et Dossier_data
+    # qui contiendront toutes les images et le fichier de données
+    # -----------------------------------------------------------------------
 
-    urllib.request.urlretrieve(urlimage, titre_image)
-    # print("Nom de l image: ", titre_image)
+    # ---------------
+    # Dossier images
+    # ---------------
+    dossier_images = "Projet2_images"
 
-    # création d'un dossier qui aura le nom de la categorie
-    nom_dossier = infos_livre["category"] + "_images"
+    # si le dossier n'existe pas, on le crée
+    if not os.path.exists(dossier_images):
+        os.mkdir(dossier_images)
 
-    # si le dossier n'existe pa, on le crée
-    if not os.path.exists(nom_dossier):
-        os.mkdir(nom_dossier)
+    if os.path.exists(dossier_images):
+        path = os.path.abspath(dossier_images)
+        os.chdir(path)
+        titre_image = nom_livre + '_' + urlimage.split("/")[-1]
+        # print("titre de l'image split:", titre_image)
+        urllib.request.urlretrieve(urlimage, titre_image)
+        # print("Nom de l image: ", titre_image)
+        os.chdir('..')
 
-    if os.path.exists(nom_dossier):
-        path = os.path.abspath(nom_dossier)
-        filedest = os.path.join(path, titre_image)
-        # Déplacer un fichier du répertoire rep1 vers rep2
-        shutil.move(titre_image, filedest)
+    # ---------------
+    # Dossier data :
+    # ---------------
+    dossier_data = "Projet2_data"
+    if not os.path.exists(dossier_data):
+        os.mkdir(dossier_data)
 
-    nom_fichier = category + ".csv"
-    # print('nom_fichier ecriture: ', nom_fichier)
+    if os.path.exists(dossier_data):
+        path = os.path.abspath(dossier_data)
+        os.chdir(path)
+        nom_fichier = "Projet2_Data.csv"
+        # nom_fichier = "Projet2_Data.uos"
 
-    # On utilise l'encodage 16 bits pour éliminer les caractères spéciaux lors lors de l'ecriture dans csvfile
-    with open(nom_fichier, 'a', newline='', encoding='UTF-16') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=infos_livre)
+        # On utilise l'encodage 16 bits pour éliminer les caractères spéciaux lors lors de l'ecriture dans csvfile
+        label = ["Code", "Title", "url", "price_including_tax", "price_excluding_tax", "number_available",
+                 "product_description", "category", "review_rating", "image_url"]
 
-        if os.stat(nom_fichier).st_size == 0:
-            # The header is written only if the file is empty
-            writer.writeheader()
-        # La méthode writerow() est utilisée pour écrire des lignes de données dans le fichier spécifié.
-        writer.writerow(infos_livre)
+        with open(nom_fichier, 'a', newline='', encoding='UTF8') as file:
+            writer = csv.DictWriter(file, fieldnames=label)
 
-if sys.argv[0][-22:] == 'unecategorieunlivre.py':
+            if os.stat(nom_fichier).st_size == 0:
+                # L'en-tête n'est écrit que si le fichier est vide
+                writer.writeheader()
+            # La méthode writerow() est utilisée pour écrire des lignes de données dans le fichier spécifié.
+            writer.writerow(infos_livre)
+
+            # for elem in infos_livre:
+            #   writer.writerow(elem)
+
+        os.chdir('..')
+
+if sys.argv[0].split("/")[-1] == 'unecategorieunlivre.py':
    extract_book(urlbook)

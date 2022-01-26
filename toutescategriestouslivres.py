@@ -48,18 +48,16 @@ links = links[:-1]
 # print('links_total :',  links)
 
 # reconstitution de l'url complete de chaque categorie
-for k in range(len(links)):
-    links[k] = 'https://books.toscrape.com/' + links[k]
-    # print(links[k])
-print('**** liste des liens url de chaque catégorie ***')
-pprint(links)
-# print('Liste de liens des categories:', links)
-
+urlcategorie = []
+for k in (links):
+    # print(k)
+    urlcategorie.append('https://books.toscrape.com/' + k)
+    # print(liens)
+# print('**** liste des liens url de chaque catégorie ***')
+# pprint(urlcategorie)
 
 # 3) appeler le programme unecategorietousleslivres.py et extraire le contenu du site entier
-urlcat = links[0]
-for urlcat in range(len(links)):
-    urlcat = links[urlcat]
+for urlcat in urlcategorie:
     print('*** TRAITEMENT DE LA CATEGORIE SUIVANTE ***')
     print('url_cat : ', urlcat)
     extract_all_books_one_cat(urlcat)

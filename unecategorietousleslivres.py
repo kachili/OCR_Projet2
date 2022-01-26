@@ -12,8 +12,7 @@ from unecategorieunlivre import extract_book
 if len(sys.argv) > 1 and sys.argv[0] == 'unecategorietousleslivres.py':
     url = sys.argv[1]
 else: # Script unecategorietousleslivres lancé avec Pycharm
-    if sys.argv[0][-28:] == 'unecategorietousleslivres.py':
-        # print('sys.argv[0][-33:] : ', sys.argv[0][-28:])
+    if sys.argv[0].split("/")[-1] == 'unecategorietousleslivres.py':
         url = 'https://books.toscrape.com/catalogue/category/books/travel_2/index.html'
 
 def extract_all_books_one_cat(url: str) :
@@ -41,7 +40,7 @@ def extract_all_books_one_cat(url: str) :
 
     # 1)  recuperer le nombre de livres dans la categorie
     nombrelivres = int(soup.select("strong")[1].text)
-    print("nombre total de livres", nombrelivres)
+    print("nombre de livres dans la catégorie :", nombrelivres)
 
     # 2) definir une liste de tous les liens des livres de cette categorie
     baliseh3 = soup.findAll('h3')
@@ -96,13 +95,13 @@ def extract_all_books_one_cat(url: str) :
                 #print('url page suivante', urlpsuiv)
 
     # print("liste des liens des livres", lienslivres)
-    print("taille liste de liens de livres : ", len(lienslivres))
+    # print("taille liste de liens de livres : ", len(lienslivres))
 
-    # 3) extraire toutes les infos de chaque livre
+    # 3) extraire toutes les infos de chaque livre de la catégorie
     for url in range(len(lienslivres)):
         url_livre = lienslivres[url]
         # print('url_livre : ', url_livre)
         extract_book(url_livre)
 
-if sys.argv[0][-28:] == 'unecategorietousleslivres.py':
+if sys.argv[0].split("/")[-1] == 'unecategorietousleslivres.py':
     extract_all_books_one_cat(url)

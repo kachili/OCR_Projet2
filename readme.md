@@ -27,8 +27,8 @@ python unecategorieunlivre.py https://books.toscrape.com/catalogue/its-only-the-
 Le parametre passé au Script est le lien du livre «It's Only the Himalayas » de la catégorie « Travel »
 --> Vous pouvez choisir n'importe quelle lien url d'un livre de n'importe quelle categorie.
 Résultat :
-Un fichier «Travel.csv » est créé avec les informations du livre.
-Un répertoire «Travel_images » est créé avec l’image du livre.
+Un répertoire «Projet2_data » est créé contanant un fichier «Projet2_data.csv» avec les informations du livre.
+Un répertoire «Projet2_images » est créé contenant l’image du livre.
  
 2ème script : unecategorietousleslivres.py
 Lancer la commande : 
@@ -36,10 +36,11 @@ python unecategorietousleslivres.py https://books.toscrape.com/catalogue/categor
 
 Le parametre passé au Script est le lien url de la catégorie "travel"
 Résultat :
-Un fichier «Travel.csv » est créé avec les informations de tous les livres de cette catégorie.
-Un répertoire «Travel_images » est créé avec l’ensemble des images des livres de la catégorie.
+Un répertoire «Projet2_data » est créé contanant un fichier «Projet2_data.csv» avec les informations de tous les livres de la catégorie.
+Un répertoire «Projet2_images » est créé contenant les images de tous les livres de la catégorie.
 --> Vous pouvez choisir n'importe quelle lien url d'une autre catégorie du site.
- 
+
+
 3ème script : toutescategoriestouslivres.py
 Lancer la commande : 
 python toutescategriestouslivres.py https://books.toscrape.com/index.html
@@ -49,8 +50,8 @@ Le parametre passé est le lien url du site books.toscrape.com
 Il extrait toutes les informations de tous les livres de toutes les catégories. 
 
 Résultat :
-Un fichier «nomdelacategorie.csv » est créé avec les informations de tous les livres pour chaque categorie.
-Un répertoire «nomdelacategorie _images » est créé avec l’ensemble des images des livres pour chaque categorie.
+Un répertoire «Projet2_data » est créé contanant un fichier «Projet2_data.csv» avec les informations de tous les livres de toutes les catégories.
+Un répertoire «Projet2_images » est créé contenant les images de tous les livres de toutes les catégories.
 
 Lien Github pour les Scripts, le fichier readme.md et le fichier requirements.txt
 https://github.com/kachili/ocr_projet2
