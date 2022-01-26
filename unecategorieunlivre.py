@@ -159,7 +159,7 @@ def extract_book(urlbook: str):
         nom_fichier = "Projet2_Data.csv"
         # nom_fichier = "Projet2_Data.uos"
 
-        # On utilise l'encodage 16 bits pour éliminer les caractères spéciaux lors lors de l'ecriture dans csvfile
+        # en-tete du fichier csv
         label = ["Code", "Title", "url", "price_including_tax", "price_excluding_tax", "number_available",
                  "product_description", "category", "review_rating", "image_url"]
 
@@ -171,9 +171,6 @@ def extract_book(urlbook: str):
                 writer.writeheader()
             # La méthode writerow() est utilisée pour écrire des lignes de données dans le fichier spécifié.
             writer.writerow(infos_livre)
-
-            # for elem in infos_livre:
-            #   writer.writerow(elem)
 
         os.chdir('..')
 
