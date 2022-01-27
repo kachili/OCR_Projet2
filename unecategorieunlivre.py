@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 import urllib.request
 import os
 import sys
-from pprint import pprint
+# from pprint import pprint
 
 # Script unecategorieunlivre lancé avec la ligne de commande avec une url comme parametre
 if len(sys.argv) > 1 and sys.argv[0] == 'unecategorieunlivre.py':
@@ -17,6 +17,7 @@ else: # Script unecategorieunlivre lancé avec Pycharm
     # print('syargvsplit :', sys.argv[0].split("/")[-1])
     if sys.argv[0].split("/")[-1] == 'unecategorieunlivre.py':
         urlbook = 'https://books.toscrape.com/catalogue/its-only-the-himalayas_981/index.html'
+        # urlbook = 'https://books.toscrape.com/catalogue/at-the-existentialist-cafe-freedom-being-and-apricot-cocktails-with-jean-paul-sartre-simone-de-beauvoir-albert-camus-martin-heidegger-edmund-husserl-karl-jaspers-maurice-merleau-ponty-and-others_459/index.html'
 
 # ----------------------------------------------------
 # fonction d'extraction d'informations pour un livre
@@ -140,10 +141,15 @@ def extract_book(urlbook: str):
     if os.path.exists(dossier_images):
         path = os.path.abspath(dossier_images)
         os.chdir(path)
+
         titre_image = nom_livre + '_' + urlimage.split("/")[-1]
-        # print("titre de l'image split:", titre_image)
+        # le nom du fichier de l'image (path compris) ne doit pas depasser 255 octets
+        if len(os.path.abspath(titre_image)) > 255:
+            titre_image = os.path.abspath(titre_image)[:200]+'.jpg'
+
         urllib.request.urlretrieve(urlimage, titre_image)
-        # print("Nom de l image: ", titre_image)
+        # print('path = os.path.abspath(dossier_data)', os.path.abspath(titre_image))
+        # print('longueur path = os.path.abspath(dossier_data)', len(os.path.abspath(titre_image)))
         os.chdir('..')
 
     # ---------------
@@ -169,7 +175,7 @@ def extract_book(urlbook: str):
             if os.stat(nom_fichier).st_size == 0:
                 # L'en-tête n'est écrit que si le fichier est vide
                 writer.writeheader()
-            # La méthode writerow() est utilisée pour écrire des lignes de données dans le fichier spécifié.
+            # La méthode writerow() est utilisée pour écrire des lignes de données dans le fichier csv.
             writer.writerow(infos_livre)
 
         os.chdir('..')
