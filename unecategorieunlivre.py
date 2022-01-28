@@ -162,14 +162,14 @@ def extract_book(urlbook: str):
     if os.path.exists(dossier_data):
         path = os.path.abspath(dossier_data)
         os.chdir(path)
-        nom_fichier = "Projet2_Data.csv"
+        nom_fichier = 'Projet2_Data.csv'
         # nom_fichier = "Projet2_Data.uos"
 
         # en-tete du fichier csv
         label = ["Code", "Title", "url", "price_including_tax", "price_excluding_tax", "number_available",
                  "product_description", "category", "review_rating", "image_url"]
 
-        with open(nom_fichier, 'a', newline='', encoding='UTF8') as file:
+        with open(nom_fichier, 'a', newline='', encoding='UTF-16') as file:
             writer = csv.DictWriter(file, fieldnames=label)
 
             if os.stat(nom_fichier).st_size == 0:
