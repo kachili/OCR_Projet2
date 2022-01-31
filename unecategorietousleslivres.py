@@ -11,8 +11,8 @@ from unecategorieunlivre import extract_book
 # Script unecategorietousleslivres avec la ligne de commande avec une url comme parametre
 if len(sys.argv) > 1 and sys.argv[0] == 'unecategorietousleslivres.py':
     url = sys.argv[1]
-else: # Script unecategorietousleslivres lancé avec Pycharm
-    if sys.argv[0].split("/")[-1] == 'unecategorietousleslivres.py':
+else: # sinon on initialise urlbook avec une url d'un livre
+    #if sys.argv[0].split("/")[-1] == 'unecategorietousleslivres.py':
         url = 'https://books.toscrape.com/catalogue/category/books/travel_2/index.html'
 
 def extract_all_books_one_cat(url: str) :
@@ -72,7 +72,6 @@ def extract_all_books_one_cat(url: str) :
                 lienslivres.append('https://books.toscrape.com/catalogue/' + lien[9:])
                 # print('url 1ère page', url)
                 # print(lienslivres)
-
         else:
             # on recupere les liens des pages suivantes
             urlpsuiv = "https://books.toscrape.com/catalogue/category/books/" + nom_categorie + "/" + "page-" + str(x+1) + ".html"
@@ -98,10 +97,14 @@ def extract_all_books_one_cat(url: str) :
     # print("taille liste de liens de livres : ", len(lienslivres))
 
     # 3) extraire toutes les infos de chaque livre de la catégorie
-    for url in range(len(lienslivres)):
-        url_livre = lienslivres[url]
-        # print('url_livre : ', url_livre)
-        extract_book(url_livre)
+    # v1 for url in range(len(lienslivres)):
+    # v1 url_livre = lienslivres[url]
 
+    for url_livre in lienslivres:
+        extract_book(url_livre)
+        # print('url_livre : ', url_livre)
+
+# execution seul du script unecategorietousleslivres.py
 if sys.argv[0].split("/")[-1] == 'unecategorietousleslivres.py':
+    # print('Script seul')
     extract_all_books_one_cat(url)
